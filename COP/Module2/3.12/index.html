@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Starting Lineup</title>
+</head>
+
+<body>
+   <h1>Starting Lineup</h1>
+   
+   <form action="https://wp.zybooks.com/form-viewer.php" method="post">
+
+      <p>
+         <fieldset>
+            <legend>Status:</legend>
+            <input type="radio" name="status" id="status1">
+            <label for="status1">Draft</label>
+            <input type="radio" name="status" id="status2" checked>
+            <label for="status2">Final</label>
+         </fieldset>
+      </p>
+
+      <p>
+         <label for="gameDate">Date:</label>
+         <select name="gameDate" id="gameDate">
+            <option>March 20</option>
+            <option>March 24</option>
+            <option>April 2</option>
+            <option>April 6</option>
+            <option>April 13</option>
+         </select>
+      </p>
+
+      <p>
+         <fieldset>
+            <legend>Players:</legend>
+
+            <p>
+               <input type="checkbox" name="player" id="player1" value="Aarav Agarwal">
+               <label for="player1">Aarav Agarwal</label>
+            </p>
+
+            <p>
+               <input type="checkbox" name="player" id="player2" value="Ava Johnson">
+               <label for="player2">Ava Johnson</label>
+            </p>
+
+            <p>
+               <input type="checkbox" name="player" id="player3" value="Julio Ortiz">
+               <label for="player3">Julio Ortiz</label>
+            </p>
+
+            <p>
+               <input type="checkbox" name="player" id="player4" value="Liam Rubio">
+               <label for="player4">Liam Rubio</label>
+            </p>
+
+            <p>
+               <input type="checkbox" name="player" id="player5" value="Emma Witherspoon">
+               <label for="player5">Emma Witherspoon</label>
+            </p>
+            
+         </fieldset>
+      </p>
+
+      <p>
+         <input type="submit" name="submit" value="Submit">
+      </p>
+
+   </form>
+   
+</body>
+
+</html>
