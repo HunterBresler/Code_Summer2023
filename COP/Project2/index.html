@@ -11,35 +11,44 @@
 </head>
 
 <body>
-    <div class="container border-bottom col-8 justify-content-left">
-        <h1>COP3813 Assignment Portal</h1>
+    <div class="container pb-4 justify-content-start">
+        <div class="row border-bottom">
+            <div class="col-sm-6 col-md-fluid">
+                <h1>Hunter Bresler's Assignment Portal</h1>
+            </div>
+        </div>
     </div>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
-                Projects
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
-                ZyLabs
-            </button>
-        </li>
-    </ul>
+    <div class="container pb-2">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="project-tab" data-bs-toggle="tab" data-bs-target="#project-tab-pane" type="button" role="tab" aria-controls="project-tab-pane" aria-selected="true">
+                    Projects
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="zylabs-tab" data-bs-toggle="tab" data-bs-target="#zylabs-tab-pane" type="button" role="tab" aria-controls="zylabs-tab-pane" aria-selected="false">
+                    ZyLabs
+                </button>
+            </li>
+        </ul>
+    </div>
+    
 
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-            <ul>
-                <li>
-                    <a href="https://basic-no-code-site-bcaede.webflow.io/" target="_blank">Project 1: No Code Website</a>
-                </li>
-                <li>
-                    <a href="https://lamp.cse.fau.edu/~hbresler2022" target="_blank">Project 2: Assignment Portal</a>
-                </li>
-            </ul>
+        <div class="tab-pane fade show active" id="project-tab-pane" role="tabpanel" aria-labelledby="project-tab" tabindex="0">
+            <div class="">
+                <ul>
+                    <li>
+                        <a href="https://basic-no-code-site-bcaede.webflow.io/" target="_blank">Project 1: No Code Website</a>
+                    </li>
+                    <li>
+                        <a href="https://lamp.cse.fau.edu/~hbresler2022" target="_blank">Project 2: Assignment Portal</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <div class="tab-pane fade" id="zylabs-tab-pane" role="tabpanel" aria-labelledby="zylabs-tab" tabindex="0">
                 <div class="accordion" id="zylabModules">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
