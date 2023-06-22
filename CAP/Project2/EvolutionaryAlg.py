@@ -21,13 +21,24 @@ class TSP_GA:
         #random.seed() # Switching to a random seed after the TSP_Grid is built
         self.populationSize = populationSize
         self.population = self.create_initial_population()
+        self.bestRoute = self.population[self.populationSize-1]
     
     # driver function of the GA
     def run_GA(self, generations):
         generationCount = 1
+        print(f"Generation {generationCount}'s best fitness: {self.population[len(self.population)-1].fitness}")
+        print(f"Generation {generationCount}'s worst fitness: {self.population[0].fitness}")
+        print(f"The Best Route found is: {self.bestRoute.__dict__}\n")
+
+        # Run a new generation of the GA generations times
         for i in range(generations):
             self.create_new_generation(generationCount)
             generationCount = generationCount + 1
+            # Print the best and worst of each generation
+            if generationCount%(generations/10) == 0 or generationCount == 1:
+                print(f"Generation {generationCount}'s best fitness: {self.population[len(self.population)-1].fitness}")
+                print(f"Generation {generationCount}'s worst fitness: {self.population[0].fitness}")
+                print(f"The Best Route found is: {self.bestRoute.__dict__}\n")
     
     # Creates the initial population for the GA
     def create_initial_population(self):
@@ -37,58 +48,45 @@ class TSP_GA:
             element.randomize_chromosome()
             element.calculate_fitness(self.gridTSP.cityList)
             population.append(element)
+        population.sort(key=lambda x: x.fitness, reverse=True) # sort the population by fitness
         return population
 
-    # Creates the entirety of the next generation using reproduction
+    # Creates the next generation using reproduction
+    # The selected parents also are in the next generation
     def create_new_generation(self, generationCount):
-        parents = self.get_parents(generationCount)
+        self.population.sort(key=lambda x: x.fitness, reverse=True) # sort the population by fitness
+        allParents = self.get_parents(generationCount)
         newPopulation = []
-        for i in range(len(parents)):
-            parents = random.sample(parents, len(parents))
-            for i in range(0, len(parents), 2):
-                childChromosome = self.crossover(parents[i], parents[i+1])
-                newChild = Element(self.gridTSP.cityCount)
-                newChild.chromosome = childChromosome
-                newChild.calculate_fitness(self.gridTSP.cityList)
-                newPopulation.append(newChild)
+        # create new population
+        for i in range(self.populationSize-len(allParents)):
+            parents = random.sample(allParents, 2)
+            childChromosome = self.crossover(parents[0], parents[1])
+            newChild = Element(self.gridTSP.cityCount)
+            newChild.chromosome = childChromosome
+            newChild.calculate_fitness(self.gridTSP.cityList)
+            newPopulation.append(newChild)
+        test1 = len(newPopulation)
+        newPopulation.extend(allParents)
+        test2 = len(newPopulation)
         self.population = newPopulation
+        if self.populationSize != len(self.population):
+            print(f"New POP_SIZE is: {len(self.population)}")
+            print(f"Number of children = {test1} Number of parents staying = {len(allParents)}")
         self.populationSize = len(self.population)
-        print(f"POP_SIZE for new gen = {self.populationSize}")
+        # Keep Track of best fitness overall
+        if newPopulation[len(self.population)-1].fitness < self.bestRoute.fitness:
+            self.bestRoute = newPopulation[len(self.population)-1]
 
     # Selects and returns a list of parents using a modified roulette wheel
-    # The top performing Element will be favored by a factor of rouletteScalar
-    # For rouletteScalar = 5, the top scorer gets odds of 5/totalOdds and the worst gets odds of 1/totalOdds
-    # Each Elements odds will be (currentElement-bottomElement)/(topElement-bottomeElement)*rouletteScalar
-    # Minimum odds being 1
+    # The top performing Element will be favored based on rank
     def get_parents(self, generationCount):
-        rouletteScalar = 5
         rouletteWheel = []
         sumOfWheel = 0.0
         parents = []
-        odds = 1
-
-        # Get the top and bottom fitness scores
-        topFitness = -math.inf
-        bottomFitness = math.inf
-        for i in self.population:
-            if i.fitness > topFitness:
-                topFitness = i.fitness
-            if i.fitness < bottomFitness:
-                bottomFitness = i.fitness
-
-        # Print the best and worst of each generation
-        print(f"Generation {generationCount}'s best fitness: {topFitness}")
-        print(f"Generation {generationCount}'s worst fitness: {bottomFitness}")
-        print(f"POP_SIZE = {self.populationSize}")
         
         # Generate "wheel"
         for i in range(0, self.populationSize):
-            try:
-                odds = (self.population[i].fitness-bottomFitness)/(topFitness-bottomFitness)*rouletteScalar
-            except:
-                print([element.fitness for element in self.population])
-            if odds < 1:
-                odds = 1
+            odds = i
             sumOfWheel = sumOfWheel + odds
             rouletteWheel.append(odds)
         
@@ -135,6 +133,13 @@ class TSP_GA:
                 else:
                     replacementAllele = unusedAlleles.pop(0)
                     childChromosome[childChromosome.index(i)] = replacementAllele
+        
+        # Add specific, random mutations by swapping 2 alleles
+        swap1 = int(random.random()*self.gridTSP.cityCount)
+        swap2 = int(random.random()*self.gridTSP.cityCount)
+        temp = childChromosome[swap1]
+        childChromosome[swap1] = childChromosome[swap2]
+        childChromosome[swap2] = temp
 
         return childChromosome
         
@@ -146,8 +151,7 @@ class Element:
         self.routeLength = 0.0
         self.fitness = 0.0
 
-    '''@property
-    def fitness(self):
+    '''def get_fitness(self):
         return self.fitness'''
     
     def check_chromosome(self, cityList):
@@ -164,11 +168,10 @@ class Element:
     # Calculates fitness 
     # fitness = routeLength - sum of the the longest 3 trips * 5
     # Hopefully it will help the GA learn that long trips are bad quickly
-    #TODO:FIX
     def calculate_fitness(self, cityList):
         self.check_chromosome(cityList)
         maxCityToCity = self.calculate_route_length(cityList)
-        self.fitness = 4000 - self.routeLength - sum(maxCityToCity)/len(self.chromosome)
+        self.fitness = self.routeLength + sum(maxCityToCity)
 
     # Calculates the total length of a route/chromosome
     # Also returns longest 3 cityToCity distances
@@ -214,7 +217,10 @@ class TSP_Grid:
         return cityList
 
 NUMBER_OF_CITIES = 25
-POPULATION_SIZE = 18
-NUMBER_OF_GENERATIONS = 10
+POPULATION_SIZE = 1000
+NUMBER_OF_GENERATIONS = 1000
 salesmanProblem = TSP_GA(NUMBER_OF_CITIES, POPULATION_SIZE)
 salesmanProblem.run_GA(NUMBER_OF_GENERATIONS)
+
+# NOTE: Lower Fitness = Better Fitness
+# Counterintuitive yes, but easier to implement
