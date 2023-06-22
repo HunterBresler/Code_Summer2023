@@ -1,5 +1,6 @@
 # Project 2: Genetic Algorthim 
 # Author: Hunter Bresler
+# Date: 06/22/2023
 
 import math
 from operator import attrgetter
@@ -32,7 +33,7 @@ class TSP_GA:
 
         # Run a new generation of the GA generations times
         for i in range(generations):
-            self.create_new_generation(generationCount)
+            self.create_new_generation()
             generationCount = generationCount + 1
             # Print the best and worst of each generation
             if generationCount%(generations/10) == 0 or generationCount == 1:
@@ -53,9 +54,9 @@ class TSP_GA:
 
     # Creates the next generation using reproduction
     # The selected parents also are in the next generation
-    def create_new_generation(self, generationCount):
+    def create_new_generation(self):
         self.population.sort(key=lambda x: x.fitness, reverse=True) # sort the population by fitness
-        allParents = self.get_parents(generationCount)
+        allParents = self.get_parents()
         newPopulation = []
         # create new population
         for i in range(self.populationSize-len(allParents)):
@@ -65,6 +66,7 @@ class TSP_GA:
             newChild.chromosome = childChromosome
             newChild.calculate_fitness(self.gridTSP.cityList)
             newPopulation.append(newChild)
+        
         test1 = len(newPopulation)
         newPopulation.extend(allParents)
         test2 = len(newPopulation)
@@ -79,7 +81,7 @@ class TSP_GA:
 
     # Selects and returns a list of parents using a modified roulette wheel
     # The top performing Element will be favored based on rank
-    def get_parents(self, generationCount):
+    def get_parents(self):
         rouletteWheel = []
         sumOfWheel = 0.0
         parents = []
@@ -99,18 +101,24 @@ class TSP_GA:
                 if spinValue >= sumOfWheel:
                     parents.append(self.population[count])
                     break
+        
         return parents
     
     # Creates children for the next generation
     # Takes a chunk from 1 parent and switches it out with the same chunk of the other
     # Will likely have duplicate cities. Addressed in mutate
     def crossover(self, parent1, parent2):
-        spliceStart = int(random.random()*len(parent1.chromosome)/2)
-        spliceEnd = int(spliceStart + random.random()*len(parent1.chromosome)/2)
+        splice1 = int(random.random()*len(parent1.chromosome))
+        splice2 = int(random.random()*len(parent1.chromosome))
         childChromosome = []
-        childChromosome.extend(parent1.chromosome[0: spliceStart])
-        childChromosome.extend(parent2.chromosome[spliceStart: spliceEnd])
-        childChromosome.extend(parent1.chromosome[spliceEnd: len(parent1.chromosome)])
+        if splice1 <= splice2:
+            childChromosome.extend(parent1.chromosome[0: splice1])
+            childChromosome.extend(parent2.chromosome[splice1: splice2])
+            childChromosome.extend(parent1.chromosome[splice2: len(parent1.chromosome)])
+        else:
+            childChromosome.extend(parent1.chromosome[0: splice2])
+            childChromosome.extend(parent2.chromosome[splice2: splice1])
+            childChromosome.extend(parent1.chromosome[splice1: len(parent1.chromosome)])
         childChromosome = self.mutate(childChromosome)
         return childChromosome
     
@@ -133,6 +141,10 @@ class TSP_GA:
                 else:
                     replacementAllele = unusedAlleles.pop(0)
                     childChromosome[childChromosome.index(i)] = replacementAllele
+        
+        # Make it so that some children don't get mutations
+        if 10*random.random() > 8:
+            return childChromosome
         
         # Add specific, random mutations by swapping 2 alleles
         swap1 = int(random.random()*self.gridTSP.cityCount)
@@ -219,7 +231,7 @@ class TSP_Grid:
 # MAIN
 NUMBER_OF_CITIES = 25
 POPULATION_SIZE = 1000
-NUMBER_OF_GENERATIONS = 1000
+NUMBER_OF_GENERATIONS = 10000
 salesmanProblem = TSP_GA(NUMBER_OF_CITIES, POPULATION_SIZE)
 salesmanProblem.run_GA(NUMBER_OF_GENERATIONS)
 
