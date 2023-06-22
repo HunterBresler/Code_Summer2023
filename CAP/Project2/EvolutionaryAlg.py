@@ -216,6 +216,7 @@ class TSP_Grid:
             cityList.append(City(x=int(random.random() * 200), y=int(random.random() * 200)))
         return cityList
 
+# MAIN
 NUMBER_OF_CITIES = 25
 POPULATION_SIZE = 1000
 NUMBER_OF_GENERATIONS = 1000
