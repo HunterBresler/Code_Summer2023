@@ -3,7 +3,6 @@
 # Date: 06/22/2023
 
 import math
-from operator import attrgetter
 import random
 # Set the initial seed to be 256 for TSP_Grid generation
 # Changes to a random seed after TSP_Grid generation
@@ -33,12 +32,13 @@ class TSP_GA:
 
         # Run a new generation of the GA generations times
         for i in range(generations):
-            self.create_new_generation()
+            averageFitness = self.create_new_generation()
             generationCount = generationCount + 1
             # Print the best and worst of each generation
             if generationCount%(generations/10) == 0 or generationCount == 1:
                 print(f"Generation {generationCount}'s best fitness: {self.population[len(self.population)-1].fitness}")
                 print(f"Generation {generationCount}'s worst fitness: {self.population[0].fitness}")
+                print(f"Generation {generationCount}'s average fitness: {averageFitness}")
                 print(f"The Best Route found is: {self.bestRoute.__dict__}\n")
     
     # Creates the initial population for the GA
@@ -55,9 +55,9 @@ class TSP_GA:
     # Creates the next generation using reproduction
     # The selected parents also are in the next generation
     def create_new_generation(self):
-        self.population.sort(key=lambda x: x.fitness, reverse=True) # sort the population by fitness
         allParents = self.get_parents()
         newPopulation = []
+        averageFitness = 0
         # create new population
         for i in range(self.populationSize-len(allParents)):
             parents = random.sample(allParents, 2)
@@ -65,6 +65,7 @@ class TSP_GA:
             newChild = Element(self.gridTSP.cityCount)
             newChild.chromosome = childChromosome
             newChild.calculate_fitness(self.gridTSP.cityList)
+            averageFitness = averageFitness + newChild.fitness
             newPopulation.append(newChild)
         
         test1 = len(newPopulation)
@@ -75,9 +76,16 @@ class TSP_GA:
             print(f"New POP_SIZE is: {len(self.population)}")
             print(f"Number of children = {test1} Number of parents staying = {len(allParents)}")
         self.populationSize = len(self.population)
+        self.population.sort(key=lambda x: x.fitness, reverse=True) # sort the population by fitness
         # Keep Track of best fitness overall
         if newPopulation[len(self.population)-1].fitness < self.bestRoute.fitness:
             self.bestRoute = newPopulation[len(self.population)-1]
+
+        # return the average fitness of a generation
+        for i in allParents:
+            f = lambda x: x.fitness
+            averageFitness = averageFitness + f(i)
+        return averageFitness/self.populationSize
 
     # Selects and returns a list of parents using a modified roulette wheel
     # The top performing Element will be favored based on rank
@@ -141,7 +149,7 @@ class TSP_GA:
                 else:
                     replacementAllele = unusedAlleles.pop(0)
                     childChromosome[childChromosome.index(i)] = replacementAllele
-        
+
         # Make it so that some children don't get mutations
         if 10*random.random() > 8:
             return childChromosome
@@ -178,12 +186,12 @@ class Element:
         self.chromosome = random.sample(self.chromosome, len(self.chromosome))
 
     # Calculates fitness 
-    # fitness = routeLength - sum of the the longest 3 trips * 5
+    # fitness = routeLength - sum of the the longest 3 trips / 3
     # Hopefully it will help the GA learn that long trips are bad quickly
     def calculate_fitness(self, cityList):
         self.check_chromosome(cityList)
         maxCityToCity = self.calculate_route_length(cityList)
-        self.fitness = self.routeLength + sum(maxCityToCity)
+        self.fitness = self.routeLength + sum(maxCityToCity)/3
 
     # Calculates the total length of a route/chromosome
     # Also returns longest 3 cityToCity distances
@@ -229,9 +237,10 @@ class TSP_Grid:
         return cityList
 
 # MAIN
+# NOTE: CHANGE THESE 3 VALUES
 NUMBER_OF_CITIES = 25
 POPULATION_SIZE = 1000
-NUMBER_OF_GENERATIONS = 10000
+NUMBER_OF_GENERATIONS =100
 salesmanProblem = TSP_GA(NUMBER_OF_CITIES, POPULATION_SIZE)
 salesmanProblem.run_GA(NUMBER_OF_GENERATIONS)
 
