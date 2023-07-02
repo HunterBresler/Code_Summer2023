@@ -74,13 +74,13 @@ class TSP_ACO:
             for city2 in self.cityList:
                 matrix[city1][city2] = [0, 1]
                 matrix[city1][city2][0] = city1.city_distance(city2)
-        self.cityMatrix = matrix
+        return matrix
     
     # Creates the initial population for the GA
     def create_population(self):
         population = []
         for i in range(0, self.populationSize):
-            ant = Ant(self.cityList)
+            ant = Ant(self.cityList, self.cityMatrix)
             ant.ant_travel()
             population.append(ant)
         population.sort(key=lambda x: x.routeLength, reverse=True) # sort the population by fitness
@@ -96,9 +96,10 @@ class TSP_ACO:
 
 # Represents a member of the colony's population    
 class Ant:
-    def __init__(self, cityList):
+    def __init__(self, cityList, cityMatrix):
         self.cityList = cityList
         self.cityCount = len(cityList)
+        self.cityMatrix = cityMatrix
         self.route = []
         self.routeLength = 0.0
 
@@ -115,25 +116,54 @@ class Ant:
     
     # Chooses a city to travel to
     def choose_a_city(self):
-        city = int(random.random()*self.cityCount)
-        if (city in self.route):
-            return self.choose_a_city()
-        return city
+        availableCities = self.get_available_cities()
+        paths = []
+        odds = list(range(len(availableCities)))
+        a = 1
+        b = 2
+        sum = 0
+
+        # Choose a random city 10% of the time
+        # Also choose a random city when route is empty
+        if (random.random() <= .1) or (self.route == []):
+            return self.cityList.index(availableCities[int(random.random()*len(availableCities))])
+        
+        # Get a list of each paths' distance and pheremone count
+        for i in range(len(availableCities)):
+            paths.append(self.cityMatrix[self.cityList[self.route[-1]]][availableCities[i]])
+        # get the heuristic values for each path
+        for i in odds:
+            #try:
+            odds[i] = (paths[i][1]**a)*((1/paths[i][0])**b)
+            sum += odds[i]
+            #except:
+                #print(self.cityList[self.route[-1]])
+                #print(availableCities[i])
+                #print(paths[i])
+
+        # spin the wheel
+        rand = random.random()*sum
+        for index,i in enumerate(odds):
+            rand += i
+            if rand > sum:
+                return self.cityList.index(availableCities[index])
+
+    # Returns a list of untraveled to cities
+    def get_available_cities(self):
+        availableCities = list(self.cityList)
+        for i in self.route:
+            availableCities.remove(self.cityList[i])
+        return availableCities
 
     # Calculate the length of a route
     def calculate_route_length(self):
         for i in range(len(self.route)):
             try:
-                self.routeLength += self.city_distance(self.cityList[self.route[i]], self.cityList[self.route[i+1]])
+                #self.routeLength += self.city_distance(self.cityList[self.route[i]], self.cityList[self.route[i+1]])
+                self.routeLength += self.cityMatrix[self.cityList[self.route[i]]][self.cityList[self.route[i+1]]][0]
             except:
-                self.routeLength += self.city_distance(self.cityList[self.route[i]], self.cityList[self.route[0]])
-    
-    # Calculates the distance between 2 cities
-    def city_distance(self, city1, city2):
-        xDistance = abs(city1.X - city2.X)
-        yDistance = abs(city1.Y - city2.Y)
-        totalDistance = math.sqrt((xDistance ** 2) + (yDistance ** 2))
-        return totalDistance
+                #self.routeLength += self.city_distance(self.cityList[self.route[i]], self.cityList[self.route[0]])
+                self.routeLength += self.cityMatrix[self.cityList[self.route[i]]][self.cityList[self.route[0]]][0]
     
 # MAIN
 # Set the initial seed to be 256 for TSP_Grid generation
