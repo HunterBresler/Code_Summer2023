@@ -134,7 +134,7 @@ function gradeQuiz()
 function loadRes(res)
 {
     const totalScore = document.getElementById("res")
-    totalScore.textContent = `You're element is' ${res}`
+    totalScore.textContent = `You're element is ${res}`
 }
 
 loadQuestions();
