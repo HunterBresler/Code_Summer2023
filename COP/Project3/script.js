@@ -2,46 +2,46 @@
 const Questions = 
 [{
     q: "What?",
-    a: [{ text: "answer1", res: true },
-    { text: "answer2", res: false },
-    { text: "answer3", res: true },
-    { text: "answer4", res: false }
+    a: [{ text: "answer1", res: "fire" },
+    { text: "answer2", res: "water" },
+    { text: "answer3", res: "earth" },
+    { text: "answer4", res: "air" }
     ]
  
 },
 {
     q: "What?",
-    a: [{ text: "answer1", res: false },
-    { text: "answer2", res: false },
-    { text: "answer3", res: false },
-    { text: "answer4", res: true }
+    a: [{ text: "answer1", res: "fire" },
+    { text: "answer2", res: "water" },
+    { text: "answer3", res: "earth" },
+    { text: "answer4", res: "air" }
     ]
  
 },
 {
     q: "What?",
-    a: [{ text: "answer1", res: true },
-    { text: "answer2", res: false },
-    { text: "answer3", res: false },
-    { text: "answer4", res: false }
+    a: [{ text: "answer1", res: "fire" },
+    { text: "answer2", res: "water" },
+    { text: "answer3", res: "earth" },
+    { text: "answer4", res: "air" }
     ]
  
 },
 {
     q: "What?",
-    a: [{ text: "answer1", res: false },
-    { text: "answer2", res: true },
-    { text: "answer3", res: false },
-    { text: "answer4", res: false }
+    a: [{ text: "answer1", res: "fire" },
+    { text: "answer2", res: "water" },
+    { text: "answer3", res: "earth" },
+    { text: "answer4", res: "air" }
     ]
  
 },
 {
     q: "What?",
-    a: [{ text: "answer1", res: false },
-    { text: "answer2", res: false },
-    { text: "answer3", res: false },
-    { text: "answer4", res: true }
+    a: [{ text: "answer1", res: "fire" },
+    { text: "answer2", res: "water" },
+    { text: "answer3", res: "earth" },
+    { text: "answer4", res: "air" }
     ]
  
 }]
@@ -59,22 +59,25 @@ function loadQuestions()
 
         for (let j = 0; j < Questions[i].a.length; j++) 
         {
-            const choicesdiv = document.createElement("div");
-            const choice = document.createElement("input");
-            const choiceLabel = document.createElement("label");
+            let choicediv = document.createElement("div");
+            let choice = document.createElement("input");
+            let choiceLabel = document.createElement("label");
             
-            choicesdiv.class = "choicediv";
+            choicediv.classList.add("choicediv");
 
             choice.type = "radio";
             choice.name = "answer"+i;
             choice.value = j;
+            choice.id = "answer"+i+j;
     
-            choiceLabel.class = "choiceLabel";
+            choiceLabel.classList.add("choiceLabel");
             choiceLabel.textContent = Questions[i].a[j].text;
+            choiceLabel.setAttribute("for", "answer"+i+j);
+            
     
-            choicesdiv.appendChild(choice);
-            choicesdiv.appendChild(choiceLabel);
-            opt.appendChild(choicesdiv);
+            choicediv.appendChild(choice);
+            choicediv.appendChild(choiceLabel);
+            opt.appendChild(choicediv);
         }
     }
     
@@ -82,27 +85,55 @@ function loadQuestions()
 
 function gradeQuiz()
 {
-    let selectedAns = 0;
-    let allAnswered = true;
+    let selectedAns;
+    let fire, water, earth, air;
+    fire = water = earth = air = 0;
 
     for (let i = 0; i < Questions.length; i++)
     {
-        selectedAns = parseInt(document.querySelector('input[name="answer'+i+'"]:checked').value);
-        score = 0;
+        selectedAns = parseString(document.querySelector('input[name="answer'+i+'"]:checked').value);
 
-        if (Questions[i].a[selectedAns].res)
+        switch (Questions[i].a[selectedAns].res)
         {
-            score++;
+            case "fire": 
+                fire++;
+                break;
+            case "water":
+                water++;
+                break;
+            case "earth":
+                earth++;
+                break;
+            case "air":
+                air++;
+                break;
         }
-
-        loadScore(score);
     }
+
+    let res;
+    if (fire > water && fire > earth && fire > air)
+    {
+        res = "fire"
+    }
+    else if (air > water && air > earth)
+    {
+        res = "air"
+    }
+    else if (water > earth)
+    {
+        res = "water"
+    }
+    else
+    {
+        res = "earth"
+    }
+    loadRes(res);
 }
 
-function loadScore(score)
+function loadRes(res)
 {
-    const totalScore = document.getElementById("score")
-    totalScore.textContent = `You scored ${score} out of ${Questions.length}`
+    const totalScore = document.getElementById("res")
+    totalScore.textContent = `You're element is' ${res}`
 }
 
 loadQuestions();
