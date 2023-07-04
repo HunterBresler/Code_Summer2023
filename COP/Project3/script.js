@@ -91,7 +91,7 @@ function gradeQuiz()
 
     for (let i = 0; i < Questions.length; i++)
     {
-        selectedAns = parseString(document.querySelector('input[name="answer'+i+'"]:checked').value);
+        selectedAns = parseInt(document.querySelector('input[name="answer'+i+'"]:checked').value);
 
         switch (Questions[i].a[selectedAns].res)
         {
@@ -127,6 +127,7 @@ function gradeQuiz()
     {
         res = "earth"
     }
+
     loadRes(res);
 }
 
