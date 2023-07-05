@@ -5,45 +5,42 @@ const Questions =
     a: [{ text: "Go Camping", res: "fire" },
     { text: "Go To The Beach", res: "water" },
     { text: "Go Hiking", res: "earth" },
-    { text: "Go ", res: "air" }
-    ]
- 
+    { text: "Go Mountain Climbing", res: "air" }]
 },
 {
-    q: "What?",
-    a: [{ text: "answer1", res: "fire" },
-    { text: "answer2", res: "earth" },
-    { text: "answer3", res: "air" },
-    { text: "answer4", res: "water" }
-    ]
- 
+    q: "What's your favorite season?",
+    a: [{ text: "Summer", res: "fire" },
+    { text: "Winter", res: "earth" },
+    { text: "Fall", res: "air" },
+    { text: "Spring", res: "water" }]
 },
 {
-    q: "What?",
-    a: [{ text: "answer1", res: "air" },
-    { text: "answer2", res: "water" },
-    { text: "answer3", res: "fire" },
-    { text: "answer4", res: "earth" }
-    ]
- 
+    q: "How do you like to spend your free time?",
+    a: [{ text: "Burning Down The Establishment", res: "air" },
+    { text: "Relaxing", res: "water" },
+    { text: "Partying", res: "fire" },
+    { text: "Spending Time With Friends", res: "earth" }]
 },
 {
-    q: "What?",
-    a: [{ text: "answer1", res: "air" },
-    { text: "answer2", res: "fire" },
-    { text: "answer3", res: "earth" },
-    { text: "answer4", res: "water" }
-    ]
- 
+    q: "How would you describe yourself?",
+    a: [{ text: "In Need Of A Therapist", res: "air" },
+    { text: "Better Than Other People", res: "fire" },
+    { text: "Family Oriented", res: "earth" },
+    { text: "Spiritual", res: "water" }]
 },
 {
-    q: "What?",
-    a: [{ text: "answer1", res: "water" },
-    { text: "answer2", res: "air" },
-    { text: "answer3", res: "fire" },
-    { text: "answer4", res: "earth" }
-    ]
- 
+    q: "What's your favorite type of crime?",
+    a: [{ text: "Arson", res: "fire" },
+    { text: "3rd Degree Murder", res: "air" },
+    { text: "Arson But In Blue", res: "water" },
+    { text: "Starting A Coup", res: "earth" }]
+},
+{
+    q: "What job would you most like to have?",
+    a: [{ text: "Captain Of The Whitebeard Pirates", res: "earth" },
+    { text: "Cult Leader", res: "water" },
+    { text: "Accountant", res: "fire" },
+    { text: "This One Is Air", res: "air" }]
 }]
 
 //Loads the questions on the webpage
@@ -82,6 +79,11 @@ function loadQuestions()
             choiceLabel.classList.add("choiceLabel");
             choiceLabel.textContent = Questions[i].a[j].text;
             choiceLabel.setAttribute("for", "answer"+i+j);
+
+            if (choiceLabel.textContent == "Arson But In Blue")
+            {
+                choicediv.classList.add("bluetext");
+            }
             
             //Add choice to div and options 
             choicediv.appendChild(choice);

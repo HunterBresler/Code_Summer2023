@@ -37,3 +37,12 @@ h1{
     border-radius: 5px;
     border-bottom: 3px solid rgb(180, 180, 180);
 }
+
+#btn{
+    background-color: blanchedalmond;
+    font-size: 16px;
+}
+
+.bluetext{
+    background-color:blue;
+}
