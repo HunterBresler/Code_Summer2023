@@ -43,6 +43,10 @@ h1{
     font-size: 16px;
 }
 
+#res{
+    margin-top: 40px;
+}
+
 .bluetext{
     background-color:blue;
 }
