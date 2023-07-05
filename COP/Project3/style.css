@@ -1,9 +1,19 @@
 body{
+    font-family: sans-serif;
     background-color: rgb(255, 247, 236);
 }
 
+h1{
+    margin: 30px;
+}
+
+.fullques{
+    width: 60%;
+    margin: 30px 20%;
+    text-align: left;
+}
+
 .question{
-    margin: 0 auto;
     width: fit-content;
     font-size: 20px;
     margin-bottom: 10px;
@@ -11,24 +21,19 @@ body{
 }
 
 .options{
-    margin: 0 auto;
-    height: flex;
     font-size: 14px;
-    margin-bottom: 30px;
 }
 
 .quiz{
     text-align: center;
-    justify-content: center;
 }
 
 .choicediv{
     background-color: rgb(235, 221, 213);
-    margin: 4px auto;
-    width: 25%;
+    margin: 4px;
+    width: 100%;
     padding-bottom: 3px;
-    border-left: 2px groove rgb(226, 226, 226);
-    border-top: 2px groove rgb(226, 226, 226);
-    border-right: 2px groove rgb(226, 226, 226);
-    border-bottom: 3px solid rgb(190, 190, 190);
+    border: 2px groove rgb(226, 226, 226);
+    border-radius: 5px;
+    border-bottom: 3px solid rgb(180, 180, 180);
 }
