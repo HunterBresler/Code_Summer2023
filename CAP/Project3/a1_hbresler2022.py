@@ -1,6 +1,6 @@
-# Project 2: Genetic Algorthim 
+# Project 3: ACO
 # Author: Hunter Bresler
-# Date: 06/22/2023
+# Date: 7/9/2023
 
 import math
 import random
@@ -164,18 +164,19 @@ class Ant:
             except:
                 #self.routeLength += self.city_distance(self.cityList[self.route[i]], self.cityList[self.route[0]])
                 self.routeLength += self.cityMatrix[self.cityList[self.route[i]]][self.cityList[self.route[0]]][0]
-    
-# MAIN
-# Set the initial seed to be 256 for TSP_Grid generation
-# Changes to a random seed after TSP_Grid generation
-random.seed(256)
 
-# NOTE: CHANGE THESE 3 VALUES
-NUMBER_OF_CITIES = int(input("NUMBER_OF_CITIES: "))#25
-POPULATION_SIZE = int(input("POPULATION_SIZE: "))#1000
-NUMBER_OF_GENERATIONS = int(input("NUMBER_OF_GENERATIONS: "))#100
-salesmanProblem = TSP_ACO(NUMBER_OF_CITIES, POPULATION_SIZE)
-salesmanProblem.run_ACO(NUMBER_OF_GENERATIONS)
+def run_ACO(): 
+    # MAIN
+    # Set the initial seed to be 256 for TSP_Grid generation
+    # Changes to a random seed after TSP_Grid generation
+    random.seed(256)
 
-# NOTE: Lower Fitness = Better Fitness
-# Counterintuitive yes, but easier to implement
+    # NOTE: CHANGE THESE 3 VALUES
+    NUMBER_OF_CITIES = int(input("NUMBER_OF_CITIES: "))#25
+    POPULATION_SIZE = int(input("POPULATION_SIZE: "))#1000
+    NUMBER_OF_GENERATIONS = int(input("NUMBER_OF_GENERATIONS: "))#100
+    salesmanProblem = TSP_ACO(NUMBER_OF_CITIES, POPULATION_SIZE)
+    salesmanProblem.run_ACO(NUMBER_OF_GENERATIONS)
+
+    # NOTE: Lower Fitness = Better Fitness
+    # Counterintuitive yes, but easier to implement
