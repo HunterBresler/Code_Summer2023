@@ -40,10 +40,10 @@ class TSP_ACO:
         self.gridTSP = TSP_Grid(cityCount)
         self.cityCount = self.gridTSP.cityCount
         self.cityList = self.gridTSP.cityList
-        #random.seed() # Switching to a random seed after the TSP_Grid is built
         self.cityMatrix = self.create_city_matrix()
         self.pheromoneIndex = 1
         self.populationSize = populationSize
+        #random.seed() # Switching to a random seed after the TSP_Grid is built
         self.population = self.create_population()
         self.bestRoute = self.population[self.populationSize-1]
     
@@ -165,18 +165,9 @@ class Ant:
                 #self.routeLength += self.city_distance(self.cityList[self.route[i]], self.cityList[self.route[0]])
                 self.routeLength += self.cityMatrix[self.cityList[self.route[i]]][self.cityList[self.route[0]]][0]
 
-def run_ACO(): 
-    # MAIN
+def run_ACO(NUMBER_OF_CITIES, POPULATION_SIZE, NUMBER_OF_GENERATIONS): 
     # Set the initial seed to be 256 for TSP_Grid generation
-    # Changes to a random seed after TSP_Grid generation
     random.seed(256)
-
-    # NOTE: CHANGE THESE 3 VALUES
-    NUMBER_OF_CITIES = int(input("NUMBER_OF_CITIES: "))#25
-    POPULATION_SIZE = int(input("POPULATION_SIZE: "))#1000
-    NUMBER_OF_GENERATIONS = int(input("NUMBER_OF_GENERATIONS: "))#100
     salesmanProblem = TSP_ACO(NUMBER_OF_CITIES, POPULATION_SIZE)
     salesmanProblem.run_ACO(NUMBER_OF_GENERATIONS)
-
-    # NOTE: Lower Fitness = Better Fitness
-    # Counterintuitive yes, but easier to implement
+run_ACO(25, 100, 100)
