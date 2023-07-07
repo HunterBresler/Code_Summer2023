@@ -4,9 +4,6 @@
 
 import math
 import random
-# Set the initial seed to be 256 for TSP_Grid generation
-# Changes to a random seed after TSP_Grid generation
-random.seed(256)
 
 # Represents a city on a TSP_Grid
 class City:
@@ -238,6 +235,8 @@ class TSP_Grid:
 
 # MAIN
 # NOTE: CHANGE THESE 3 VALUES
+# Set the initial seed to be 256 for TSP_Grid generation
+random.seed(256)
 NUMBER_OF_CITIES = int(input("NUMBER_OF_CITIES: "))#25
 POPULATION_SIZE = int(input("POPULATION_SIZE: "))#1000
 NUMBER_OF_GENERATIONS = int(input("NUMBER_OF_GENERATIONS: "))#100

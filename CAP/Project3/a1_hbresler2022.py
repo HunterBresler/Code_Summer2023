@@ -56,6 +56,7 @@ class TSP_ACO:
         for i in range(generations-1):
             generationCount = generationCount + 1
             self.population = self.create_population()
+            self.add_pheromones()
             if (self.population[self.populationSize-1].routeLength < self.bestRoute.routeLength):
                 self.bestRoute = self.population[self.populationSize-1]
             # Print the best and worst of each generation
@@ -90,9 +91,9 @@ class TSP_ACO:
         for ant in self.population:
             for i in range(len(ant.route)):
                 try:
-                    self.cityMatrix[i][i+1][self.pheromoneIndex] += 1
+                    self.cityMatrix[self.cityList[ant.route[i]]][self.cityList[ant.route[i+1]]][self.pheromoneIndex] += 1
                 except:
-                    self.cityMatrix[i][0][self.pheromoneIndex] += 1
+                    self.cityMatrix[self.cityList[ant.route[i]]][self.cityList[ant.route[0]]][self.pheromoneIndex] += 1
 
 # Represents a member of the colony's population    
 class Ant:
@@ -170,4 +171,4 @@ def run_ACO(NUMBER_OF_CITIES, POPULATION_SIZE, NUMBER_OF_GENERATIONS):
     random.seed(256)
     salesmanProblem = TSP_ACO(NUMBER_OF_CITIES, POPULATION_SIZE)
     salesmanProblem.run_ACO(NUMBER_OF_GENERATIONS)
-run_ACO(25, 100, 100)
+run_ACO(25, 1000, 100)
