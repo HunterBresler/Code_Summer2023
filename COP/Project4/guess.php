@@ -31,12 +31,12 @@
             }
             elseif ($randNum > $_POST["num"])
             {
-                echo "<p>Hint: The number is higher than that.</p>"
+                echo "<p>Hint: The number is higher than that.</p>";
                 $attemps--;
             } 
             elseif ($randNum < $_POST["num"])
             {
-                echo "<p>Hint: The number is lower than that.</p>"
+                echo "<p>Hint: The number is lower than that.</p>";
                 $attemps--;
             }         
         }
