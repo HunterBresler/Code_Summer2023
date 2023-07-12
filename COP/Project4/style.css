@@ -1,0 +1,30 @@
+body{
+    margin: 10%;
+    text-align: center;
+    justify-content: center;
+    background-color: bisque;
+}
+
+p{
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h2{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.btn{
+    width: 10em;
+    height: 2em;
+    font-size: small;
+}
