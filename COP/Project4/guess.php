@@ -37,6 +37,14 @@
             {
                 _print();
             }
+            elseif ($_POST["num"] == NULL) 
+            {
+                echo "<h3>
+                I'm thinking of a number between 1 and 10.
+                <br>
+                You have <strong>" . $_POST["att"] . "</strong> attemps to guess it.
+                </h3>";
+            }
             elseif ($_POST["rand"] == $_POST["num"]) 
             {
                 echo "<h2>Correct, the number was " . $_POST["rand"] . "!</h2>";

@@ -1,0 +1,34 @@
+body {
+   font-family: Roboto, Helvetica, sans-serif;
+   text-align: center;
+}
+
+.x {
+   color: red;
+}
+
+.o {
+   color: blue;
+ }
+ 
+#board {
+   font: 85px arial, sans-serif;
+   margin: 3px;
+   
+   /* Your solution goes here 
+   A display property that makes the board's <div> element a grid layout container.
+A grid-template-columns property to create three columns that are all 100px wide.
+A grid-template-rows property to create three rows that are all 100px tall.
+A grid-gap property to create a 10px gap between each of the nine grid cells.
+A justify-content property that centers the grid horizontally.*/  
+   display: grid;
+   grid-template-columns: 100px 100px 100px;    
+   grid-template-rows: 100px 100px 100px;
+   grid-gap: 10px;
+   justify-content: center;
+}
+
+#board > div {
+   border: 1px solid LightSkyBlue;
+   text-align: center;
+}
